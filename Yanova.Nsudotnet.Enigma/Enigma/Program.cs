@@ -124,16 +124,17 @@ namespace Enigma
                 keyStream.WriteLine(key);
                 keyStream.WriteLine(iv);
             }
-
-            ICryptoTransform cryptoTransform = algorithm.CreateEncryptor();
-
+            
             using (Stream inStream = new FileStream(inFile, FileMode.Open))
             {
                 using (Stream outputStream = new FileStream(outFile, FileMode.OpenOrCreate))
                 {
-                    using (CryptoStream cryptoStream = new CryptoStream(outputStream, cryptoTransform, CryptoStreamMode.Write))
+                    using (ICryptoTransform cryptoTransform = algorithm.CreateEncryptor())
                     {
-                        inStream.CopyTo(cryptoStream);
+                        using (CryptoStream cryptoStream = new CryptoStream(outputStream, cryptoTransform, CryptoStreamMode.Write))
+                        {
+                            inStream.CopyTo(cryptoStream);
+                        }
                     }
                 }
             }
@@ -146,16 +147,17 @@ namespace Enigma
                 algorithm.Key = Convert.FromBase64String(keyStream.ReadLine());
                 algorithm.IV = Convert.FromBase64String(keyStream.ReadLine());
             }
-
-            ICryptoTransform cryptoTransform = algorithm.CreateDecryptor(algorithm.Key, algorithm.IV);
-
+            
             using (FileStream inputStream = new FileStream(inFile, FileMode.Open))
             {
                 using (FileStream outputStream = new FileStream(outFile, FileMode.OpenOrCreate))
                 {
-                    using (CryptoStream cryptoStream = new CryptoStream(inputStream, cryptoTransform, CryptoStreamMode.Read))
+                    using (ICryptoTransform cryptoTransform = algorithm.CreateDecryptor(algorithm.Key, algorithm.IV))
                     {
-                        cryptoStream.CopyTo(outputStream);
+                        using (CryptoStream cryptoStream = new CryptoStream(inputStream, cryptoTransform, CryptoStreamMode.Read))
+                        {
+                            cryptoStream.CopyTo(outputStream);
+                        }
                     }
                 }
             }
