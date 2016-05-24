@@ -20,12 +20,18 @@ namespace Calendar
             }
 
             var names = CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames;
-            Console.Write("{0}\t{1}\t{2}\t{3}\t{4}\t", names[(int)DayOfWeek.Monday], names[(int)DayOfWeek.Tuesday], names[(int)DayOfWeek.Wednesday], 
-                                                       names[(int)DayOfWeek.Thursday], names[(int)DayOfWeek.Friday]);
-            
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("{0}\t{1}\n", names[(int)DayOfWeek.Saturday], names[(int)DayOfWeek.Sunday]);
 
+            for(int i = 1; i < names.Length; ++i)
+            {
+                if(i == names.Length - 1)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                Console.Write(names[i] + "\t");
+            }
+
+            Console.WriteLine(names[0]);
+            
             Console.ForegroundColor = ConsoleColor.White;
 
             int firstDay = (int)(new DateTime(date.Year, date.Month, 1)).DayOfWeek;
