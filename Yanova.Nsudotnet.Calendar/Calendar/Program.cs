@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Calendar
 {
@@ -18,10 +19,12 @@ namespace Calendar
                 return;
             }
 
-            Console.Write("Пн\tВт\tСр\tЧт\tПт\t");
+            var names = CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames;
+            Console.Write("{0}\t{1}\t{2}\t{3}\t{4}\t", names[(int)DayOfWeek.Monday], names[(int)DayOfWeek.Tuesday], names[(int)DayOfWeek.Wednesday], 
+                                                       names[(int)DayOfWeek.Thursday], names[(int)DayOfWeek.Friday]);
             
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Сб\tВс\n");
+            Console.Write("{0}\t{1}\n", names[(int)DayOfWeek.Saturday], names[(int)DayOfWeek.Sunday]);
 
             Console.ForegroundColor = ConsoleColor.White;
 
